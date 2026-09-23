@@ -20,6 +20,7 @@
     <a href="#menu" class="w3-bar-item w3-button w3-xlarge">MENU</a>
     <a href="#about" class="w3-bar-item w3-button w3-xlarge">ABOUT</a>
     <a href="#contact" class="w3-bar-item w3-button w3-xlarge">CONTACT</a>
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-xlarge w3-red" onclick="openCart()">CART (<span class="cart-count">0</span>)</a>
   </div>
   <div class="w3-bar w3-black w3-hide-large w3-hide-medium" id="myNavbarMobile">
     <a href="#home" class="w3-bar-item w3-button w3-xlarge">PIZZA BEAN</a>
@@ -30,6 +31,7 @@
     <a href="#menu" class="w3-bar-item w3-button w3-xlarge" onclick="toggleMobileNav()">MENU</a>
     <a href="#about" class="w3-bar-item w3-button w3-xlarge" onclick="toggleMobileNav()">ABOUT</a>
     <a href="#contact" class="w3-bar-item w3-button w3-xlarge" onclick="toggleMobileNav()">CONTACT</a>
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-xlarge w3-red" onclick="toggleMobileNav();openCart()">CART (<span class="cart-count">0</span>)</a>
   </div>
 </div>
 
@@ -117,6 +119,31 @@
   </div>
 </div>
 
+<!-- Cart drawer -->
+<div id="cart-overlay" onclick="closeCart()"></div>
+<aside id="cart-drawer" aria-label="Shopping cart">
+  <div class="cart-head">
+    <h2>Your Cart</h2>
+    <button class="cart-close" onclick="closeCart()" aria-label="Close cart">&times;</button>
+  </div>
+  <div id="cart-items"></div>
+  <div id="cart-foot">
+    <div id="cart-total"></div>
+    <form id="checkout-form">
+      <p><input class="w3-input w3-border" type="text" placeholder="Your name" required id="co-name"></p>
+      <p><input class="w3-input w3-border" type="tel" placeholder="Phone number" required id="co-phone"></p>
+      <p><button class="w3-button w3-red w3-block" type="submit">PLACE ORDER</button></p>
+    </form>
+  </div>
+  <div id="order-done" style="display:none">
+    <h3>Order received</h3>
+    <p id="order-summary"></p>
+    <p><a id="order-mailto" class="w3-button w3-green w3-block" href="#">SEND ORDER VIA EMAIL</a></p>
+    <p class="w3-medium">Or call us: <a id="order-tel" href="tel:00000000">00000000</a></p>
+    <p><button class="w3-button w3-light-grey w3-block" onclick="closeCart()">BACK TO MENU</button></p>
+  </div>
+</aside>
+
 <!-- Footer -->
 <footer class="w3-center w3-black w3-padding-48">
   <div class="w3-row-padding w3-large">
@@ -179,6 +206,7 @@ function renderMenu() {
       if (item.tag) html += '<span class="w3-tag ' + (item.tagClass || "w3-grey") + ' w3-round">' + item.tag + "</span>";
       html += '</span><span class="w3-tag w3-dark-grey w3-round price">' + item.price + "</span></h1>";
       html += '<p class="w3-text-grey">' + item.desc + "</p>";
+      html += '<p><button class="w3-button w3-red add-btn" onclick="addToCart(\'' + cat + '\',' + i + ',this)">ADD +</button></p>';
       if (i < arr.length - 1) html += "<hr>";
       return html;
     }).join("");
@@ -234,9 +262,108 @@ function applyConfig() {
   btel.href = "tel:" + SITE_CONFIG.phone.replace(/\s/g, "");
 }
 
+/* ============ CART (static demo, saved in this browser) ============ */
+let CART = {};
+try { CART = JSON.parse(localStorage.getItem("pb_cart") || "{}"); } catch (err) { CART = {}; }
+
+function saveCart() {
+  try { localStorage.setItem("pb_cart", JSON.stringify(CART)); } catch (err) {}
+}
+function parsePrice(p) {
+  return parseInt(String(p).replace(/[^0-9]/g, ""), 10) || 0;
+}
+function cartCount() {
+  return Object.keys(CART).reduce(function (n, k) { return n + CART[k].qty; }, 0);
+}
+function cartTotal() {
+  return Object.keys(CART).reduce(function (n, k) { return n + CART[k].qty * parsePrice(CART[k].price); }, 0);
+}
+function addToCart(cat, i, btn) {
+  const item = MENU_DATA[cat] && MENU_DATA[cat][i];
+  if (!item) return;
+  if (!CART[item.name]) CART[item.name] = { price: item.price, qty: 0 };
+  CART[item.name].qty++;
+  saveCart();
+  renderCart();
+  if (btn) {
+    const t = btn.textContent;
+    btn.textContent = "ADDED";
+    setTimeout(function () { btn.textContent = t; }, 800);
+  }
+}
+function changeQty(key, d) {
+  if (!CART[key]) return;
+  CART[key].qty += d;
+  if (CART[key].qty <= 0) delete CART[key];
+  saveCart();
+  renderCart();
+}
+function renderCart() {
+  const box = document.getElementById("cart-items");
+  const keys = Object.keys(CART);
+  const counts = document.getElementsByClassName("cart-count");
+  for (let i = 0; i < counts.length; i++) counts[i].textContent = cartCount();
+  if (!keys.length) {
+    box.innerHTML = '<p class="w3-text-grey">Your cart is empty. Add something tasty from the menu.</p>';
+    document.getElementById("cart-foot").style.display = "none";
+  } else {
+    box.innerHTML = keys.map(function (k) {
+      const it = CART[k];
+      const line = it.qty * parsePrice(it.price);
+      return '<div class="cart-item">' +
+        '<div class="cart-item-name"><b>' + k + '</b><br><span class="w3-text-grey">' + it.price + ' each</span></div>' +
+        '<div class="cart-qty">' +
+          '<button onclick="changeQty(\'' + k.replace(/'/g, "\\'") + '\',-1)" aria-label="Decrease">-</button>' +
+          '<span>' + it.qty + '</span>' +
+          '<button onclick="changeQty(\'' + k.replace(/'/g, "\\'") + '\',1)" aria-label="Increase">+</button>' +
+        '</div>' +
+        '<div class="cart-line">₹' + line + '</div>' +
+      '</div>';
+    }).join("");
+    document.getElementById("cart-foot").style.display = "block";
+  }
+  document.getElementById("cart-total").textContent = "Total: ₹" + cartTotal() + " (" + cartCount() + " items)";
+  document.getElementById("order-done").style.display = "none";
+}
+function openCart() {
+  renderCart();
+  document.getElementById("cart-drawer").classList.add("open");
+  document.getElementById("cart-overlay").classList.add("show");
+}
+function closeCart() {
+  document.getElementById("cart-drawer").classList.remove("open");
+  document.getElementById("cart-overlay").classList.remove("show");
+}
+function placeOrder(e) {
+  e.preventDefault();
+  const keys = Object.keys(CART);
+  if (!keys.length) return;
+  const name = document.getElementById("co-name").value;
+  const phone = document.getElementById("co-phone").value;
+  const lines = keys.map(function (k) {
+    return CART[k].qty + "x " + k + " - ₹" + (CART[k].qty * parsePrice(CART[k].price));
+  });
+  const text = "New order - " + SITE_CONFIG.restaurant + "\nName: " + name + "\nPhone: " + phone + "\n" + lines.join("\n") + "\nTotal: ₹" + cartTotal();
+  document.getElementById("order-mailto").href =
+    "mailto:" + SITE_CONFIG.email + "?subject=" + encodeURIComponent("New order - " + SITE_CONFIG.restaurant) + "&body=" + encodeURIComponent(text);
+  const otel = document.getElementById("order-tel");
+  otel.textContent = SITE_CONFIG.phone;
+  otel.href = "tel:" + SITE_CONFIG.phone.replace(/\s/g, "");
+  document.getElementById("order-summary").textContent = lines.join(" | ") + " | Total: ₹" + cartTotal();
+  document.getElementById("order-done").style.display = "block";
+  CART = {};
+  saveCart();
+  renderCart();
+  document.getElementById("order-done").style.display = "block";
+  document.getElementById("checkout-form").reset();
+}
+document.getElementById("checkout-form").addEventListener("submit", placeOrder);
+document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeCart(); });
+
 applyConfig();
 document.getElementById("booking-form").addEventListener("submit", handleBooking);
 renderMenu();
+renderCart();
 document.getElementById("myLink").click();
 </script>
 

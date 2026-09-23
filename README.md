@@ -17,8 +17,13 @@ Live file: `index.html`
 3. Images — replace `homescreen.png` / `Menu.jpg` / `header.png`, keep names.
 
 ## Contact form (static demo)
-No server. Submit opens the visitor's email app (`mailto:` to `SITE_CONFIG.email`) with booking details + shows a thank-you note.
+No server. Submit shows a booking summary, then the visitor taps to send via email app (or calls).
 Paid upgrade path is commented in code: POST to Formspree/Google Form.
+
+## Cart (static demo)
+Every dish has ADD +. Navbar CART (desktop + mobile menu) opens a slide-in drawer:
+quantities, totals in ₹, saved in `localStorage`, checkout via name/phone,
+order sent through email app. No backend.
 
 ## Excluded (not pushed)
 - `PIZZA BEAN.zip` — backup archive
