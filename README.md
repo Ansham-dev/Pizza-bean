@@ -7,14 +7,14 @@ Live file: `index.html`
 ## Files
 - `index.html` — main site (menu rendered from `MENU_DATA` in-page, edit data not HTML)
 - `Style.css` — custom styles (w3.css + font via CDN)
-- `pb.jpg` — header background
+- `homescreen.png` — hero/header background
 - `Menu.jpg` — chef image
-- `R.jpg` — restaurant image
+- `header.png` — logo / restaurant image
 
 ## How clients customize (3 minutes)
 1. `SITE_CONFIG` at bottom of `index.html` — email, phone, restaurant name.
 2. `MENU_DATA` — pizza/pasta/starter items, prices, tags.
-3. Images — replace `pb.jpg` / `Menu.jpg` / `R.jpg`, keep names.
+3. Images — replace `homescreen.png` / `Menu.jpg` / `header.png`, keep names.
 
 ## Contact form (static demo)
 No server. Submit opens the visitor's email app (`mailto:` to `SITE_CONFIG.email`) with booking details + shows a thank-you note.

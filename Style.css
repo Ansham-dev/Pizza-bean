@@ -12,13 +12,15 @@ body, h1, h2, h3, h4, h5, h6 {
 .bgimg {
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url('pb.jpg');
+  background-image: url('homescreen.png');
   min-height: 90%;
 }
-/* Sauce Dropping Heading */
+/* Sauce Dropping Heading - fluid size so it never overflows phones */
 .sauce-heading {
   color: red;
-  font-size: 100px;
+  font-size: clamp(3rem, 14vw, 6.25rem);
+  line-height: 1;
+  text-align: center;
   font-family: 'Amatic SC', cursive;
   position: relative;
   animation: drip 2s infinite ease-in-out;
@@ -42,4 +44,95 @@ body, h1, h2, h3, h4, h5, h6 {
 .w3-bar-item.w3-button:hover {
   background-color: red;
   color: white;
+}
+
+/* Centered desktop nav */
+.nav-desktop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* Mobile nav (w3 hides desktop bar on small screens) */
+.nav-mobile-links {
+  display: none;
+}
+.nav-mobile-links.w3-show {
+  display: block;
+}
+
+/* Hero: keep heading + button centered and inside the viewport */
+.hero-inner {
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+/* Menu items: flex header so name + price wrap cleanly on phones */
+.menu-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px 12px;
+  flex-wrap: wrap;
+  margin: 0;
+}
+.menu-item-head .price {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* ---------- Phone fixes (<=600px) ---------- */
+@media (max-width: 600px) {
+  .bgimg {
+    min-height: 78vh;
+    background-position: center;
+  }
+  /* Sections used w3-xxlarge everywhere - too big on phones */
+  #menu.w3-xxlarge,
+  #about.w3-xlarge,
+  #contact.w3-xlarge {
+    font-size: 22px !important;
+    line-height: 1.35;
+  }
+  #menu .w3-jumbo,
+  #about .w3-jumbo,
+  #contact .w3-jumbo {
+    font-size: 48px !important;
+  }
+  #menu .w3-content,
+  #about .w3-content,
+  #contact .w3-content {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  /* Tabs: 3 across without squish */
+  .tablink {
+    padding: 12px 4px !important;
+    font-size: 22px !important;
+  }
+  /* Menu cards */
+  #Pizza, #Pasta, #Starter {
+    padding: 20px 16px !important;
+  }
+  .menu-item-head {
+    font-size: 26px;
+  }
+  /* Chef image floats right on desktop - centers on phones */
+  #about .w3-circle.w3-right {
+    float: none !important;
+    display: block;
+    margin: 16px auto !important;
+  }
+  /* Opening hours: stack the two columns */
+  #about .w3-row .w3-col.s6 {
+    width: 100%;
+  }
+  /* Form inputs: 16px+ stops iOS auto-zoom, tighter padding */
+  #booking-form .w3-input {
+    font-size: 18px !important;
+    padding: 12px !important;
+  }
+  footer.w3-xxlarge {
+    font-size: 22px !important;
+  }
 }
