@@ -286,16 +286,6 @@ function cartCount() {
 function cartTotal() {
   return Object.keys(CART).reduce(function (n, k) { return n + CART[k].qty * parsePrice(CART[k].price); }, 0);
 }
-function addToCart(cat, i) {
-  const item = MENU_DATA[cat] && MENU_DATA[cat][i];
-  if (!item) return;
-  if (!CART[item.name]) CART[item.name] = { price: item.price, qty: 0 };
-  CART[item.name].qty++;
-  saveCart();
-  renderCart();
-  bumpBadge();
-  showToast(item.name + " added to cart");
-}
 /* +/- stepper shown right on the dish once it is in the cart */
 function menuDelta(cat, i, d) {
   const item = MENU_DATA[cat] && MENU_DATA[cat][i];
