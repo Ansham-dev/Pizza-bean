@@ -1,0 +1,24 @@
+# --- Pizza Bean: exclude unnecessary files ---
+
+# Backup archive (duplicate of tracked files, 1.4MB)
+/PIZZA BEAN.zip
+*.zip
+
+# Unrelated language study files
+/언어/
+*/언어/
+
+# Unused / empty files
+OUTPUT.jpeg
+Style.css
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.bak
+*~
+
+# Git
+!.gitignore
