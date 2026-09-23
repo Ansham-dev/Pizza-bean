@@ -138,8 +138,9 @@
   </div>
   <div id="order-done" style="display:none">
     <h3>Order received</h3>
+    <p id="order-status" class="w3-medium"></p>
     <p id="order-summary"></p>
-    <p><a id="order-mailto" class="w3-button w3-green w3-block" href="#">SEND ORDER VIA EMAIL</a></p>
+    <p id="order-mailto-row"><a id="order-mailto" class="w3-button w3-green w3-block" href="#">SEND ORDER VIA EMAIL</a></p>
     <p class="w3-medium">Or call us: <a id="order-tel" href="tel:00000000">00000000</a></p>
     <p><button class="w3-button w3-light-grey w3-block" onclick="closeCart()">BACK TO MENU</button></p>
   </div>
@@ -171,7 +172,11 @@ const SITE_CONFIG = {
   email: "hello@pizzabean.example", // booking requests open a mailto: to this address
   phone: "00000000",
   address: "some address at some place",
-  restaurant: "PIZZA BEAN"
+  restaurant: "PIZZA BEAN",
+  // BACKEND (optional): paste your order API endpoint to take orders online,
+  // e.g. "https://xyz.supabase.co/rest/v1/orders". Leave "" for email-only demo.
+  orderApi: "",
+  orderApiKey: "" // e.g. Supabase anon key (sent as `apikey` header). Leave "" if none.
 };
 
 /* ============ MENU DATA: clients edit items here, not HTML ============ */
@@ -383,28 +388,78 @@ function closeCart() {
   document.getElementById("cart-drawer").classList.remove("open");
   document.getElementById("cart-overlay").classList.remove("show");
 }
+/* ============ ORDER API LAYER (backend-ready, email fallback) ============
+   If SITE_CONFIG.orderApi is set, orders POST as JSON and the email button
+   hides (order already reached the kitchen). If unset - or the POST fails -
+   the sample falls back to the email flow, so the demo never looks broken.
+   Expected contract: POST JSON, any 2xx = accepted. See README for payload. */
+function submitOrderToBackend(payload) {
+  if (!SITE_CONFIG.orderApi) return Promise.resolve(false);
+  const headers = { "Content-Type": "application/json" };
+  if (SITE_CONFIG.orderApiKey) {
+    headers["apikey"] = SITE_CONFIG.orderApiKey;
+    headers["Authorization"] = "Bearer " + SITE_CONFIG.orderApiKey;
+  }
+  return fetch(SITE_CONFIG.orderApi, {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify(payload)
+  }).then(function (res) {
+    return res.ok;
+  }).catch(function () {
+    return false;
+  });
+}
+function showOrderConfirmation(payload, linesText, sentOnline) {
+  const subject = "New order - " + SITE_CONFIG.restaurant;
+  const body = "New order - " + SITE_CONFIG.restaurant +
+    "\nName: " + payload.customer.name + "\nPhone: " + payload.customer.phone +
+    "\n" + linesText + "\nTotal: ₹" + payload.total;
+  document.getElementById("order-mailto").href =
+    "mailto:" + SITE_CONFIG.email + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+  document.getElementById("order-mailto-row").style.display = sentOnline ? "none" : "block";
+  document.getElementById("order-status").textContent = sentOnline
+    ? "Sent to the kitchen. We will call you to confirm."
+    : "Online ordering is not connected for this demo - send the order via email below, or call us.";
+  const otel = document.getElementById("order-tel");
+  otel.textContent = SITE_CONFIG.phone;
+  otel.href = "tel:" + SITE_CONFIG.phone.replace(/\s/g, "");
+  document.getElementById("order-summary").textContent = linesText + " | Total: ₹" + payload.total;
+  document.getElementById("order-done").style.display = "block";
+  document.getElementById("checkout-form").reset();
+}
 function placeOrder(e) {
   e.preventDefault();
   const keys = Object.keys(CART);
   if (!keys.length) return;
   const name = document.getElementById("co-name").value;
   const phone = document.getElementById("co-phone").value;
-  const lines = keys.map(function (k) {
-    return CART[k].qty + "x " + k + " - ₹" + (CART[k].qty * parsePrice(CART[k].price));
+  const items = keys.map(function (k) {
+    const unit = parsePrice(CART[k].price);
+    return { name: k, qty: CART[k].qty, unitPrice: unit, lineTotal: CART[k].qty * unit };
   });
-  const text = "New order - " + SITE_CONFIG.restaurant + "\nName: " + name + "\nPhone: " + phone + "\n" + lines.join("\n") + "\nTotal: ₹" + cartTotal();
-  document.getElementById("order-mailto").href =
-    "mailto:" + SITE_CONFIG.email + "?subject=" + encodeURIComponent("New order - " + SITE_CONFIG.restaurant) + "&body=" + encodeURIComponent(text);
-  const otel = document.getElementById("order-tel");
-  otel.textContent = SITE_CONFIG.phone;
-  otel.href = "tel:" + SITE_CONFIG.phone.replace(/\s/g, "");
-  document.getElementById("order-summary").textContent = lines.join(" | ") + " | Total: ₹" + cartTotal();
-  document.getElementById("order-done").style.display = "block";
-  CART = {};
-  saveCart();
-  renderCart();
-  document.getElementById("order-done").style.display = "block";
-  document.getElementById("checkout-form").reset();
+  const payload = {
+    restaurant: SITE_CONFIG.restaurant,
+    customer: { name: name, phone: phone },
+    items: items,
+    total: cartTotal(),
+    createdAt: new Date().toISOString()
+  };
+  const linesText = items.map(function (it) {
+    return it.qty + "x " + it.name + " - ₹" + it.lineTotal;
+  }).join(" | ");
+  const btn = e.target.querySelector('button[type="submit"]');
+  const oldLabel = btn.textContent;
+  btn.textContent = "SENDING...";
+  btn.disabled = true;
+  submitOrderToBackend(payload).then(function (sentOnline) {
+    btn.textContent = oldLabel;
+    btn.disabled = false;
+    CART = {};
+    saveCart();
+    renderCart();
+    showOrderConfirmation(payload, linesText, sentOnline);
+  });
 }
 document.getElementById("checkout-form").addEventListener("submit", placeOrder);
 document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeCart(); });
