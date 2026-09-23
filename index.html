@@ -74,7 +74,7 @@
     <p><strong>The Chef?</strong> Mr. Bean himself! A culinary genius with a sense of humor, always adding a bit of fun to the kitchen.</p>
     <img src="Menu.jpg" style="width:150px" class="w3-circle w3-right" alt="Chef">
     <p>We are proud of our interiors and the cozy vibe that Mr. Bean brings to our kitchen and dining experience.</p>
-    <img src="header.png" style="width:100%" class="w3-margin-top w3-margin-bottom" alt="Restaurant">
+    <p class="w3-center"><img src="header.png" class="logo-card" alt="Pizza Bean logo"></p>
     <h1><b>Opening Hours</b></h1>
 
     <div class="w3-row">
@@ -97,7 +97,7 @@
 <div class="w3-container w3-padding-64 w3-blue-grey w3-xlarge" id="contact">
   <div class="w3-content">
     <h1 class="w3-center w3-jumbo" style="margin-bottom:64px">Contact</h1>
-    <p>Find us at <span id="address-text">some address at some place</span> or call us at <a id="phone-link" href="tel:00000000"><span id="phone-text">00000000</span></a></p>
+    <p>Find us at <span id="address-text">12 MG Road, Bengaluru</span> or call us at <a id="phone-link" href="tel:+919876543210"><span id="phone-text">+91 98765 43210</span></a></p>
     <p><span class="w3-tag">FYI!</span> We offer full-service catering for any event, large or small.</p>
     <!-- Static-site demo form: no backend. Shows a booking summary on the page,
          then the visitor taps SEND to open their email app (or just calls us).
@@ -114,7 +114,7 @@
       <h2>Booking request ready</h2>
       <p id="booking-summary"></p>
       <p><a id="booking-mailto" class="w3-button w3-green w3-block" href="#">OPEN EMAIL APP TO SEND</a></p>
-      <p class="w3-medium">No email app? Just call us: <a id="booking-tel" href="tel:00000000">00000000</a></p>
+      <p class="w3-medium">No email app? Just call us: <a id="booking-tel" href="tel:+919876543210">+91 98765 43210</a></p>
     </div>
   </div>
 </div>
@@ -141,7 +141,7 @@
     <p id="order-status" class="w3-medium"></p>
     <p id="order-summary"></p>
     <p id="order-mailto-row"><a id="order-mailto" class="w3-button w3-green w3-block" href="#">SEND ORDER VIA EMAIL</a></p>
-    <p class="w3-medium">Or call us: <a id="order-tel" href="tel:00000000">00000000</a></p>
+    <p class="w3-medium">Or call us: <a id="order-tel" href="tel:+919876543210">+91 98765 43210</a></p>
     <p><button class="w3-button w3-light-grey w3-block" onclick="closeCart()">BACK TO MENU</button></p>
   </div>
 </aside>
@@ -160,7 +160,7 @@
     </div>
     <div class="w3-third w3-margin-bottom">
       <h3>Find Us</h3>
-      <p class="w3-medium"><span id="address-text-2">some address at some place</span><br><a id="phone-link-2" href="tel:00000000">00000000</a></p>
+      <p class="w3-medium"><span id="address-text-2">12 MG Road, Bengaluru</span><br><a id="phone-link-2" href="tel:+919876543210">+91 98765 43210</a></p>
     </div>
   </div>
   <p class="w3-large">Powered by <a title="PIZZA BEAN" target="_blank" class="w3-hover-text-green">PIZZA BEAN</a></p>
@@ -169,9 +169,9 @@
 <script>
 /* ============ CLIENT CONFIG: edit these lines per client ============ */
 const SITE_CONFIG = {
-  email: "hello@pizzabean.example", // booking requests open a mailto: to this address
-  phone: "00000000",
-  address: "some address at some place",
+  email: "orders@pizzabean.in", // booking requests open a mailto: to this address
+  phone: "+91 98765 43210",
+  address: "12 MG Road, Bengaluru",
   restaurant: "PIZZA BEAN",
   // BACKEND (optional): paste your order API endpoint to take orders online,
   // e.g. "https://xyz.supabase.co/rest/v1/orders". Leave "" for email-only demo.

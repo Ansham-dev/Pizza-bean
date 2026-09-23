@@ -88,6 +88,14 @@ body, h1, h2, h3, h4, h5, h6 {
   white-space: nowrap;
 }
 
+/* Logo shown at native size on a card - never stretched */
+.logo-card {
+  width: 100%;
+  max-width: 440px;
+  border-radius: 12px;
+  margin: 16px auto;
+}
+
 /* ---------- Cart drawer ---------- */
 #cart-overlay {
   position: fixed;
