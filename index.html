@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>PIZZA BEAN</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="PIZZA BEAN - pizza, pasta and starters. Sample static restaurant website.">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amatic+SC">
+<link rel="stylesheet" href="Style.css">
+</head>
+
+<body>
+
+<!-- Navbar -->
+<div class="w3-top w3-hide-small">
+  <div class="w3-bar w3-xlarge w3-black w3-opacity w3-hover-opacity-off" id="myNavbar">
+    <a href="#home" class="w3-bar-item w3-button">HOME</a>
+    <a href="#menu" class="w3-bar-item w3-button">MENU</a>
+    <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
+    <a href="#contact" class="w3-bar-item w3-button">CONTACT</a>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="bgimg w3-display-container w3-grayscale-min" id="home">
+  <div class="w3-display-middle w3-center">
+    <h1 class="sauce-heading">PIZZA BEAN</h1>
+    <p><a href="#menu" class="w3-button w3-xxlarge w3-black">Let me see the menu</a></p>
+  </div>
+</header>
+
+<!-- Menu Section (rendered from MENU_DATA below - clients edit data, not HTML) -->
+<div class="w3-container w3-black w3-padding-64 w3-xxlarge" id="menu">
+  <div class="w3-content">
+    <h1 class="w3-center w3-jumbo" style="margin-bottom:64px">THE MENU</h1>
+    <div class="w3-row w3-center w3-border w3-border-dark-grey">
+      <a href="javascript:void(0)" onclick="openMenu(event, 'Pizza');" id="myLink">
+        <div class="w3-col s4 tablink w3-padding-large">Pizza</div>
+      </a>
+      <a href="javascript:void(0)" onclick="openMenu(event, 'Pasta');">
+        <div class="w3-col s4 tablink w3-padding-large">Pasta</div>
+      </a>
+      <a href="javascript:void(0)" onclick="openMenu(event, 'Starter');">
+        <div class="w3-col s4 tablink w3-padding-large">Starters</div>
+      </a>
+    </div>
+
+    <div id="Pizza" class="w3-container menu w3-padding-32 w3-white"></div>
+    <div id="Pasta" class="w3-container menu w3-padding-32 w3-white"></div>
+    <div id="Starter" class="w3-container menu w3-padding-32 w3-white"></div>
+    <br>
+  </div>
+</div>
+
+<!-- About Section -->
+<div class="w3-container w3-padding-64 w3-red w3-grayscale w3-xlarge" id="about">
+  <div class="w3-content">
+    <h1 class="w3-center w3-jumbo" style="margin-bottom:64px">About</h1>
+    <p>The Pizza Restaurant was founded by <strong>Mr. Bean himself</strong>, who wanted to bring the world of pizza and pasta to life with a touch of humor and heart. The restaurant's atmosphere reflects Mr. Bean's quirky yet warm personality, making every visit a delightful experience.</p>
+    <p><strong>The Chef?</strong> Mr. Bean himself! A culinary genius with a sense of humor, always adding a bit of fun to the kitchen.</p>
+    <img src="Menu.jpg" style="width:150px" class="w3-circle w3-right" alt="Chef">
+    <p>We are proud of our interiors and the cozy vibe that Mr. Bean brings to our kitchen and dining experience.</p>
+    <img src="R.jpg" style="width:100%" class="w3-margin-top w3-margin-bottom" alt="Restaurant">
+    <h1><b>Opening Hours</b></h1>
+
+    <div class="w3-row">
+      <div class="w3-col s6">
+        <p>Mon &amp; Tue CLOSED</p>
+        <p>Wednesday 10:00 - 24:00</p>
+        <p>Thursday 10:00 - 24:00</p>
+      </div>
+      <div class="w3-col s6">
+        <p>Friday 10:00 - 24:00</p>
+        <p>Saturday 10:00 - 23:00</p>
+        <p>Sunday Closed</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Contact Section -->
+<div class="w3-container w3-padding-64 w3-blue-grey w3-grayscale-min w3-xlarge" id="contact">
+  <div class="w3-content">
+    <h1 class="w3-center w3-jumbo" style="margin-bottom:64px">Contact</h1>
+    <p>Find us at some address at some place or call us at <span id="phone-text">00000000</span></p>
+    <p><span class="w3-tag">FYI!</span> We offer full-service catering for any event, large or small.</p>
+    <!-- Static-site demo form: no backend. Sends via the visitor's email app.
+         To collect messages without a backend, replace handleBooking() with a
+         Formspree/Google Form POST (see comment in script). -->
+    <form id="booking-form">
+      <p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="Name" required name="Name" id="f-name"></p>
+      <p><input class="w3-input w3-padding-16 w3-border" type="number" placeholder="How many people" required name="People" id="f-people" min="1"></p>
+      <p><input class="w3-input w3-padding-16 w3-border" type="datetime-local" required name="date" id="f-date" value="2026-11-16T20:00"></p>
+      <p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="Message / Special requirements" required name="Message" id="f-msg"></p>
+      <p><button class="w3-button w3-light-grey w3-block" type="submit">SEND MESSAGE</button></p>
+    </form>
+    <p id="form-note" class="w3-large" style="display:none"></p>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="w3-center w3-black w3-padding-48 w3-xxlarge">
+  <p>Powered by <a title="PIZZA BEAN" target="_blank" class="w3-hover-text-green">PIZZA BEAN</a></p>
+</footer>
+
+<script>
+/* ============ CLIENT CONFIG: edit these 3 lines per client ============ */
+const SITE_CONFIG = {
+  email: "hello@pizzabean.example", // booking requests open a mailto: to this address
+  phone: "00000000",
+  restaurant: "PIZZA BEAN"
+};
+
+/* ============ MENU DATA: clients edit items here, not HTML ============ */
+const MENU_DATA = {
+  Pizza: [
+    { name: "Margherita", price: "₹199", desc: "Tomato sauce, mozzarella, and basil" },
+    { name: "Cheese Feast", price: "₹299", desc: "Mozzarella, cheddar, parmesan, and more cheese!" },
+    { name: "Chicken Tikka", price: "₹399", desc: "Chicken tikka, mozzarella, onions, peppers" },
+    { name: "Pineapple Paradise", price: "₹349", desc: "Mozzarella, pineapple, ham, and basil" },
+    { name: "Spicy Inferno", price: "₹499", desc: "Pepperoni, jalapeños, hot chili flakes, mozzarella", tag: "Hot!", tagClass: "w3-red" },
+    { name: "Veggie Supreme", price: "₹399", desc: "Peppers, mushrooms, onions, and olives", tag: "New", tagClass: "w3-grey" }
+  ],
+  Pasta: [
+    { name: "Lasagna", price: "₹299", desc: "Lasagna sheets, cheese, tomato sauce, and ground beef", tag: "Popular", tagClass: "w3-grey" },
+    { name: "Spaghetti Aglio Olio", price: "₹249", desc: "Spaghetti, garlic, olive oil, chili flakes" },
+    { name: "Fettuccine Alfredo", price: "₹349", desc: "Fettuccine pasta with creamy Alfredo sauce" },
+    { name: "Penne Arrabbiata", price: "₹299", desc: "Penne pasta in spicy tomato sauce" }
+  ],
+  Starter: [
+    { name: "Soup of the Day", price: "₹99", desc: "Ask the waiter for today's soup special", tag: "Seasonal", tagClass: "w3-grey" },
+    { name: "Bruschetta", price: "₹149", desc: "Bread with pesto, tomatoes, garlic, and onion" },
+    { name: "Garlic Bread", price: "₹149", desc: "Garlic butter grilled bread" },
+    { name: "Fried Mozzarella", price: "₹199", desc: "Golden-fried mozzarella served with marinara sauce" }
+  ]
+};
+
+function renderMenu() {
+  Object.keys(MENU_DATA).forEach(function (cat) {
+    const box = document.getElementById(cat);
+    if (!box) return;
+    box.innerHTML = MENU_DATA[cat].map(function (item, i, arr) {
+      let html = "<h1><b>" + item.name + "</b> ";
+      if (item.tag) html += '<span class="w3-tag ' + (item.tagClass || "w3-grey") + ' w3-round">' + item.tag + "</span>";
+      html += '<span class="w3-right w3-tag w3-dark-grey w3-round">' + item.price + "</span></h1>";
+      html += '<p class="w3-text-grey">' + item.desc + "</p>";
+      if (i < arr.length - 1) html += "<hr>";
+      return html;
+    }).join("");
+  });
+}
+
+function openMenu(evt, menuName) {
+  const x = document.getElementsByClassName("menu");
+  for (let i = 0; i < x.length; i++) x[i].style.display = "none";
+  const tablinks = document.getElementsByClassName("tablink");
+  for (let i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+  }
+  document.getElementById(menuName).style.display = "block";
+  evt.currentTarget.className += " w3-red";
+}
+
+/* Static contact demo: builds a mailto: so the sample works with zero backend.
+   UPGRADE PATH (when a client pays for message collection): point the form at
+   Formspree, e.g. fetch("https://formspree.io/f/YOUR_ID", {method:"POST", ...}). */
+function handleBooking(e) {
+  e.preventDefault();
+  const name = document.getElementById("f-name").value;
+  const people = document.getElementById("f-people").value;
+  const date = document.getElementById("f-date").value;
+  const msg = document.getElementById("f-msg").value;
+  const subject = encodeURIComponent("Table booking - " + SITE_CONFIG.restaurant);
+  const body = encodeURIComponent("Name: " + name + "\nPeople: " + people + "\nDate: " + date + "\nMessage: " + msg);
+  window.location.href = "mailto:" + SITE_CONFIG.email + "?subject=" + subject + "&body=" + body;
+  const note = document.getElementById("form-note");
+  note.style.display = "block";
+  note.textContent = "Thanks " + name + "! Your email app should now open with the booking details.";
+}
+
+document.getElementById("phone-text").textContent = SITE_CONFIG.phone;
+document.getElementById("booking-form").addEventListener("submit", handleBooking);
+renderMenu();
+document.getElementById("myLink").click();
+</script>
+
+</body>
+</html>
