@@ -1,4 +1,11 @@
 /* PIZZA BEAN - custom styles (loaded after w3.css) */
+html {
+  scroll-behavior: smooth;
+}
+/* Fixed navbar overlaps anchor jumps - keep section headings visible */
+#home, #menu, #about, #contact {
+  scroll-margin-top: 52px;
+}
 body, html {
   height: 100%;
   margin: 0;
