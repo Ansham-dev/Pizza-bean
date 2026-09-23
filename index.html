@@ -120,6 +120,7 @@
 </div>
 
 <!-- Cart drawer -->
+<div id="toast"></div>
 <div id="cart-overlay" onclick="closeCart()"></div>
 <aside id="cart-drawer" aria-label="Shopping cart">
   <div class="cart-head">
@@ -202,14 +203,16 @@ function renderMenu() {
     const box = document.getElementById(cat);
     if (!box) return;
     box.innerHTML = MENU_DATA[cat].map(function (item, i, arr) {
-      let html = '<h1 class="menu-item-head"><span class="menu-item-name"><b>' + item.name + "</b> ";
+      let html = '<div class="menu-item"><h1 class="menu-item-head"><span class="menu-item-name"><b>' + item.name + "</b> ";
       if (item.tag) html += '<span class="w3-tag ' + (item.tagClass || "w3-grey") + ' w3-round">' + item.tag + "</span>";
       html += '</span><span class="w3-tag w3-dark-grey w3-round price">' + item.price + "</span></h1>";
       html += '<p class="w3-text-grey">' + item.desc + "</p>";
-      html += '<p><button class="w3-button w3-red add-btn" onclick="addToCart(\'' + cat + '\',' + i + ',this)">ADD +</button></p>';
+      html += '<p class="add-row" id="addbox-' + cat + '-' + i + '"></p>';
+      html += "</div>";
       if (i < arr.length - 1) html += "<hr>";
       return html;
     }).join("");
+    syncMenuButtons();
   });
 }
 
@@ -278,17 +281,62 @@ function cartCount() {
 function cartTotal() {
   return Object.keys(CART).reduce(function (n, k) { return n + CART[k].qty * parsePrice(CART[k].price); }, 0);
 }
-function addToCart(cat, i, btn) {
+function addToCart(cat, i) {
   const item = MENU_DATA[cat] && MENU_DATA[cat][i];
   if (!item) return;
   if (!CART[item.name]) CART[item.name] = { price: item.price, qty: 0 };
   CART[item.name].qty++;
   saveCart();
   renderCart();
-  if (btn) {
-    const t = btn.textContent;
-    btn.textContent = "ADDED";
-    setTimeout(function () { btn.textContent = t; }, 800);
+  bumpBadge();
+  showToast(item.name + " added to cart");
+}
+/* +/- stepper shown right on the dish once it is in the cart */
+function menuDelta(cat, i, d) {
+  const item = MENU_DATA[cat] && MENU_DATA[cat][i];
+  if (!item) return;
+  const key = item.name;
+  if (d > 0 && !CART[key]) CART[key] = { price: item.price, qty: 0 };
+  if (!CART[key]) return;
+  CART[key].qty += d;
+  if (CART[key].qty <= 0) delete CART[key];
+  else if (d > 0) showToast(item.name + " added to cart");
+  saveCart();
+  renderCart();
+  bumpBadge();
+}
+function syncMenuButtons() {
+  Object.keys(MENU_DATA).forEach(function (cat) {
+    MENU_DATA[cat].forEach(function (item, i) {
+      const slot = document.getElementById("addbox-" + cat + "-" + i);
+      if (!slot) return;
+      const qty = CART[item.name] ? CART[item.name].qty : 0;
+      if (qty > 0) {
+        slot.innerHTML = '<span class="menu-stepper">' +
+          '<button onclick="menuDelta(\'' + cat + '\',' + i + ',-1)" aria-label="Remove one">-</button>' +
+          '<b>' + qty + ' in cart</b>' +
+          '<button onclick="menuDelta(\'' + cat + '\',' + i + ',1)" aria-label="Add one">+</button>' +
+        '</span>';
+      } else {
+        slot.innerHTML = '<button class="w3-button w3-red add-btn" onclick="menuDelta(\'' + cat + '\',' + i + ',1)">ADD +</button>';
+      }
+    });
+  });
+}
+let toastTimer = null;
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { t.classList.remove("show"); }, 1800);
+}
+function bumpBadge() {
+  const badges = document.getElementsByClassName("cart-count");
+  for (let i = 0; i < badges.length; i++) {
+    badges[i].classList.remove("bump");
+    void badges[i].offsetWidth;
+    badges[i].classList.add("bump");
   }
 }
 function changeQty(key, d) {
@@ -303,6 +351,7 @@ function renderCart() {
   const keys = Object.keys(CART);
   const counts = document.getElementsByClassName("cart-count");
   for (let i = 0; i < counts.length; i++) counts[i].textContent = cartCount();
+  syncMenuButtons();
   if (!keys.length) {
     box.innerHTML = '<p class="w3-text-grey">Your cart is empty. Add something tasty from the menu.</p>';
     document.getElementById("cart-foot").style.display = "none";
