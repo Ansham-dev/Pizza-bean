@@ -567,11 +567,43 @@ document.addEventListener("keydown", function (e) { if (e.key === "Escape") clos
   const progress = document.getElementById("scroll-progress");
   const nav = document.getElementById("myNavbar");
   let mx = 0, my = 0, tx = 0, ty = 0;
+  let tX = 0, tY = 0, tS = 1, tO = 0, cX = 0, cY = 0, cS = 1, cO = 0;
 
   document.addEventListener("mousemove", function (e) {
     tx = (e.clientX / window.innerWidth - 0.5) * 22;
     ty = (e.clientY / window.innerHeight - 0.5) * 22;
   });
+
+  function computeTargets(y, vh, vw, h) {
+    const menuEl = document.getElementById("menu");
+    const aboutEl = document.getElementById("about");
+    const contactEl = document.getElementById("contact");
+    const menuTop = menuEl ? menuEl.offsetTop : vh;
+    const aboutTop = aboutEl ? aboutEl.offsetTop : vh * 2;
+    const contactTop = contactEl ? contactEl.offsetTop : vh * 3;
+    const docBottom = Math.max(1, h);
+    const rightX = Math.min(vw * 0.32, 400);
+    const leftX = -Math.min(vw * 0.32, 400);
+    const stops = [
+      { y: vh * 0.3, x: rightX, dy: -60, s: 0.85, o: 0 },
+      { y: menuTop + vh * 0.1, x: rightX, dy: 30, s: 1.0, o: 0.92 },
+      { y: aboutTop + vh * 0.15, x: leftX, dy: 20, s: 1.05, o: 0.92 },
+      { y: contactTop + vh * 0.1, x: rightX, dy: 40, s: 1.0, o: 0.92 },
+      { y: docBottom, x: 0, dy: 120, s: 0.8, o: 0.2 }
+    ];
+    let a = stops[0], b = stops[stops.length - 1];
+    for (let i = 0; i < stops.length - 1; i++) {
+      if (y >= stops[i].y && y <= stops[i + 1].y) { a = stops[i]; b = stops[i + 1]; break; }
+    }
+    if (y < stops[0].y) { a = stops[0]; b = stops[0]; }
+    const span = Math.max(1, b.y - a.y);
+    let t = Math.min(1, Math.max(0, (y - a.y) / span));
+    t = t * t * (3 - 2 * t);
+    tX = a.x + (b.x - a.x) * t;
+    tY = a.dy + (b.dy - a.dy) * t;
+    tS = a.s + (b.s - a.s) * t;
+    tO = a.o + (b.o - a.o) * t;
+  }
 
   function onScroll() {
     const y = window.scrollY || 0;
@@ -581,69 +613,34 @@ document.addEventListener("keydown", function (e) { if (e.key === "Escape") clos
     if (progress) progress.style.transform = "scaleX(" + (h > 0 ? y / h : 0) + ")";
     if (nav) nav.classList.toggle("scrolled", y > 30);
 
-    // HERO: fly up-right toward the menu as you scroll (hands off to traveler)
+    // HERO: fly up-right toward the menu (hands off to traveler)
     if (heroPizza) {
-      const rot = y * 0.22;
+      const rot = y * 0.22 + (Date.now() * 0.02 % 360) * 0.1;
       const fade = Math.max(0, 1 - y / (vh * 0.85));
-      mx += (tx - mx) * 0.08;
-      my += (ty - my) * 0.08;
       heroPizza.style.transform = "translateY(" + (-y * 0.32 + my * 0.6) + "px) translateX(" + (y * 0.45 + mx * 0.6) + "px) scale(" + Math.max(0.55, 1 - y / 2200) + ")";
       heroPizza.style.opacity = fade.toFixed(2);
       if (heroSpin) heroSpin.setAttribute("transform", "rotate(" + rot + " 240 220)");
     }
-    // TRAVELER: one pizza that flies page -> page (menu right, about left, contact right)
-    if (follower) {
-      const menuEl = document.getElementById("menu");
-      const aboutEl = document.getElementById("about");
-      const contactEl = document.getElementById("contact");
-      const menuTop = menuEl ? menuEl.offsetTop : vh;
-      const aboutTop = aboutEl ? aboutEl.offsetTop : vh * 2;
-      const contactTop = contactEl ? contactEl.offsetTop : vh * 3;
-      const docBottom = Math.max(1, h);
-
-      // journey stops: x as fraction of viewport, y-offset, scale
-      const rightX = Math.min(vw * 0.33, 420);
-      const leftX = -Math.min(vw * 0.33, 420);
-      const stops = [
-        { y: vh * 0.35, x: rightX, dy: -40, s: 0.9, o: 0 },      // still in hero -> hidden
-        { y: menuTop + vh * 0.1, x: rightX, dy: 30, s: 1.0, o: 0.95 },   // MENU right
-        { y: aboutTop + vh * 0.15, x: leftX, dy: 20, s: 1.12, o: 0.95 }, // ABOUT left
-        { y: contactTop + vh * 0.1, x: rightX, dy: 40, s: 1.0, o: 0.95 },// CONTACT right
-        { y: docBottom, x: 0, dy: 120, s: 0.85, o: 0.25 }                // footer fade
-      ];
-      let a = stops[0], b = stops[stops.length - 1];
-      for (let i = 0; i < stops.length - 1; i++) {
-        if (y >= stops[i].y && y <= stops[i + 1].y) { a = stops[i]; b = stops[i + 1]; break; }
-      }
-      if (y < stops[0].y) { a = stops[0]; b = stops[0]; }
-      const span = Math.max(1, b.y - a.y);
-      let t = Math.min(1, Math.max(0, (y - a.y) / span));
-      t = t * t * (3 - 2 * t); // smoothstep
-      const jx = a.x + (b.x - a.x) * t;
-      const jy = a.dy + (b.dy - a.dy) * t + Math.sin(y * 0.003) * 18;
-      const js = a.s + (b.s - a.s) * t;
-      const jo = a.o + (b.o - a.o) * t;
-      const rot = y * 0.25;
-      follower.style.opacity = Math.max(0, jo).toFixed(2);
-      follower.style.transform = "translate(" + jx.toFixed(1) + "px," + jy.toFixed(1) + "px) rotate(" + rot.toFixed(1) + "deg) scale(" + js.toFixed(3) + ")";
-    }
-    requestAnimationFrameIdle();
-  }
-  let ticking = false;
-  function requestAnimationFrameIdle() {
-    // smooth mouse-follow even between scrolls
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(function () {
-        // tiny idle float applied via CSS animation; just ease mouse here
-        ticking = false;
-      });
-    }
+    computeTargets(y, vh, vw, h);
   }
   let raf = null;
+  const startT = Date.now();
   function loop() {
     mx += (tx - mx) * 0.06;
     my += (ty - my) * 0.06;
+    // ease traveler toward scroll target every frame = smooth + always alive
+    cX += (tX - cX) * 0.07;
+    cY += (tY - cY) * 0.07;
+    cS += (tS - cS) * 0.07;
+    cO += (tO - cO) * 0.09;
+    if (follower) {
+      const now = (Date.now() - startT) / 1000;
+      const bobY = Math.sin(now * 1.6) * 14;   // float up/down always
+      const bobX = Math.cos(now * 1.1) * 10 + mx * 0.5; // drift + mouse
+      const tilt = Math.max(-16, Math.min(16, (tX - cX) * 0.08)); // lean into turns
+      follower.style.opacity = Math.max(0, cO).toFixed(2);
+      follower.style.transform = "translate(" + (cX + bobX).toFixed(1) + "px," + (cY + bobY + my * 0.4).toFixed(1) + "px) rotate(" + tilt.toFixed(1) + "deg) scale(" + cS.toFixed(3) + ")";
+    }
     raf = requestAnimationFrame(loop);
   }
   window.addEventListener("scroll", onScroll, { passive: true });

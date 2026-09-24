@@ -32,13 +32,18 @@ img{max-width:100%}
   transform-origin:0 50%;transform:scaleX(0);
 }
 #scroll-follower{
-  position:fixed;left:50%;top:50%;width:min(390px,44vw);
-  margin-left:calc(min(390px,44vw) / -2);margin-top:calc(min(390px,44vw) / -2);
-  z-index:1;opacity:0;pointer-events:none;
-  filter:drop-shadow(0 26px 44px rgba(0,0,0,.5)) saturate(1.12);
+  position:fixed;left:50%;top:50%;width:min(300px,36vw);
+  margin-left:calc(min(300px,36vw) / -2);margin-top:calc(min(300px,36vw) / -2);
+  z-index:60;opacity:0;pointer-events:none;
+  filter:drop-shadow(0 26px 44px rgba(0,0,0,.55)) saturate(1.15);
   will-change:transform,opacity;
 }
-#scroll-follower svg{width:100%;height:auto;display:block}
+#scroll-follower svg{
+  width:100%;height:auto;display:block;
+  animation:travelerSpin 16s linear infinite;
+  transform-origin:50% 50%;
+}
+@keyframes travelerSpin{to{transform:rotate(360deg)}}
 
 /* ---------- nav ---------- */
 .w3-top{z-index:1100}
