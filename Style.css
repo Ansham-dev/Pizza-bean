@@ -82,12 +82,11 @@ img{max-width:100%}
 }
 .hero-bg{
   position:absolute;inset:0;
-  background-image:url('homescreen.png');
-  background-size:cover;background-position:center 20%;
-  opacity:.22;filter:saturate(1.1) contrast(1.05);
+  background-image:radial-gradient(rgba(255,182,39,.14) 1.5px,transparent 1.6px);
+  background-size:28px 28px;
+  opacity:.5;
   mask-image:linear-gradient(180deg,#000 55%,transparent 92%);
   -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 92%);
-  transform:scale(1.04);
 }
 .hero-glow{
   position:absolute;width:640px;height:640px;right:-110px;top:8%;
@@ -330,14 +329,16 @@ footer .w3-medium{font-family:"Plus Jakarta Sans",sans-serif}
 .deal-price{font-family:"Amatic SC",cursive;font-size:44px;font-weight:700;color:#ffb627}
 .deal-price-row{display:flex;align-items:center;gap:14px}
 .deals-visual{position:relative;display:grid;place-items:center}
-.deals-img{width:min(420px,80vw);aspect-ratio:1;object-fit:cover;border-radius:50%;border:10px solid rgba(255,255,255,.9);box-shadow:var(--shadow)}
+.deals-pizza-big{width:min(420px,80vw);height:auto;filter:drop-shadow(0 30px 40px rgba(0,0,0,.5));animation:floaty 5s ease-in-out infinite}
 .deals-float{position:absolute;bottom:12px;background:#fff;color:#4a1508;font-weight:800;padding:8px 16px;border-radius:999px;box-shadow:var(--shadow)}
-.fav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1100px;margin:0 auto 26px}
-.flavour-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:1100px;margin:0 auto 26px}
-.crave-card{background:#fff;border:1px solid #f0dfc6;border-radius:20px;padding:22px 18px;box-shadow:0 14px 30px rgba(74,21,8,.1);text-align:center;display:grid;gap:8px;align-content:start}
-.crave-card h3{font-size:34px;margin:6px 0;color:#4a1508}
-.crave-pizza-emoji{font-size:64px;line-height:1;filter:drop-shadow(0 10px 14px rgba(0,0,0,.2))}
-.crave-desc{color:#7a5a44;font-size:15px;min-height:44px}
+.fav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto 26px}
+.flavour-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1100px;margin:0 auto 26px}
+.crave-card{background:#fff;border:1px solid #f0dfc6;border-radius:22px;padding:20px 18px 18px;box-shadow:0 14px 30px rgba(74,21,8,.1);text-align:center;display:grid;gap:8px;align-content:start;transition:transform .2s ease,box-shadow .2s ease}
+.crave-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(74,21,8,.18)}
+.crave-card h3{font-size:32px;margin:6px 0 2px;color:#4a1508;line-height:1}
+.crave-pizza-wrap{display:grid;place-items:center;background:radial-gradient(circle,#fff8ee 0%,#ffe9c4 70%);border-radius:18px;padding:14px}
+.crave-pizza-img{width:150px;height:150px;border-radius:50%;border:7px solid #ffdf8a;box-shadow:0 12px 22px rgba(74,21,8,.25),inset 0 0 0 4px #fff;background:#ffbe3c}
+.crave-desc{color:#7a5a44;font-size:14.5px;min-height:44px;line-height:1.5}
 .crave-price-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px}
 .crave-price{font-weight:800;color:#4a1508;font-size:15px}
 .customizer{background:#fffdf7!important;color:#4a1508;text-align:center;position:relative;overflow:hidden}

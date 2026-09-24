@@ -155,7 +155,16 @@
       </div>
     </div>
     <div class="deals-visual reveal">
-      <img src="homescreen.png" alt="Fresh pepperoni pizza deals" class="deals-img" onerror="this.style.display='none'">
+      <svg viewBox="0 0 400 400" class="deals-pizza-big" role="img" aria-label="Fresh pepperoni pizza">
+        <circle cx="200" cy="200" r="188" fill="#d98a2e"/>
+        <circle cx="200" cy="200" r="172" fill="#f4b54a"/>
+        <circle cx="200" cy="200" r="148" fill="#c62b1b"/>
+        <circle cx="200" cy="200" r="132" fill="#ffc93e"/>
+        <g fill="#b3271e" stroke="#77130c" stroke-width="5">
+          <circle cx="150" cy="150" r="28"/><circle cx="250" cy="140" r="30"/><circle cx="260" cy="240" r="27"/><circle cx="150" cy="250" r="29"/><circle cx="200" cy="195" r="30"/>
+        </g>
+        <g fill="#1f9d4c"><ellipse cx="185" cy="130" rx="14" ry="8"/><ellipse cx="235" cy="200" rx="14" ry="8"/><ellipse cx="175" cy="215" rx="13" ry="8"/></g>
+      </svg>
       <div class="deals-float">🔥 Hot & Fresh</div>
     </div>
   </div>
@@ -747,10 +756,40 @@ document.addEventListener("keydown", function (e) { if (e.key === "Escape") clos
   document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
 })();
 
-/* PizzaCrave grids: favorites (3) + regular flavours (8) - reuse MENU_DATA so ADD/cart keeps working */
-function craveCard(item, cat, i) {
+/* PizzaCrave grids with real pizza art (no more emoji) - reuse MENU_DATA so cart keeps working */
+function pizzaArt(seed) {
+  const cheeses = ['#ffc93e','#ffbe3c','#ffd166','#ffb627','#ffcf4d','#ffc93e'];
+  const cheese = cheeses[seed % cheeses.length];
+  let extra = '';
+  if (seed % 6 === 0) {
+    extra = '<g fill="#1f9d4c"><ellipse cx="70" cy="60" rx="12" ry="7"/><ellipse cx="130" cy="90" rx="12" ry="7"/><ellipse cx="85" cy="120" rx="11" ry="7"/></g>' +
+      '<g fill="#e6392b"><circle cx="100" cy="75" r="10"/><circle cx="120" cy="125" r="10"/></g>';
+  } else if (seed % 6 === 1) {
+    extra = '<g fill="#fff3c4" opacity=".9"><ellipse cx="70" cy="80" rx="14" ry="10"/><ellipse cx="125" cy="70" rx="13" ry="10"/><ellipse cx="110" cy="125" rx="15" ry="11"/></g>';
+  } else if (seed % 6 === 2) {
+    extra = '<g fill="#a35a1a"><rect x="62" y="66" width="20" height="16" rx="4"/><rect x="115" y="60" width="20" height="16" rx="4"/><rect x="100" y="115" width="22" height="17" rx="4"/></g>' +
+      '<g fill="#1f9d4c"><ellipse cx="85" cy="110" rx="10" ry="6"/><ellipse cx="125" cy="100" rx="10" ry="6"/></g>';
+  } else if (seed % 6 === 3) {
+    extra = '<g fill="#ffe55c"><rect x="65" y="70" width="16" height="14" rx="3"/><rect x="115" y="65" width="16" height="14" rx="3"/><rect x="95" y="115" width="16" height="14" rx="3"/></g>' +
+      '<g fill="#ff9aa2"><circle cx="85" cy="95" r="9"/><circle cx="120" cy="110" r="9"/></g>';
+  } else if (seed % 6 === 4) {
+    extra = '<g fill="#e63b21"><ellipse cx="70" cy="75" rx="11" ry="6" transform="rotate(-25 70 75)"/><ellipse cx="125" cy="110" rx="11" ry="6" transform="rotate(20 125 110)"/></g>';
+  } else {
+    extra = '<g fill="#1f9d4c"><ellipse cx="70" cy="80" rx="11" ry="6"/><ellipse cx="120" cy="75" rx="11" ry="6"/><ellipse cx="100" cy="120" rx="11" ry="6"/></g>' +
+      '<g fill="#fff4d6" stroke="#b99a55" stroke-width="2"><circle cx="90" cy="65" r="8"/><circle cx="115" cy="125" r="8"/></g>';
+  }
+  return '<svg viewBox="0 0 200 200" class="crave-pizza-img" aria-hidden="true">' +
+    '<circle cx="100" cy="100" r="94" fill="#d98a2e"/>' +
+    '<circle cx="100" cy="100" r="86" fill="#f4b54a"/>' +
+    '<circle cx="100" cy="100" r="72" fill="#c62b1b"/>' +
+    '<circle cx="100" cy="100" r="64" fill="' + cheese + '"/>' +
+    '<g fill="#b3271e" stroke="#77130c" stroke-width="3">' +
+    '<circle cx="75" cy="75" r="14"/><circle cx="125" cy="70" r="15"/><circle cx="130" cy="120" r="13"/><circle cx="75" cy="122" r="14"/><circle cx="100" cy="97" r="15"/>' +
+    '</g>' + extra + '</svg>';
+}
+function craveCard(item, cat, i, artSeed) {
   return '<div class="crave-card reveal in">' +
-    '<div class="crave-pizza-emoji">🍕</div>' +
+    '<div class="crave-pizza-wrap">' + pizzaArt(artSeed) + '</div>' +
     '<h3>' + item.name + '</h3>' +
     '<p class="crave-desc">' + item.desc + '</p>' +
     '<div class="crave-price-row"><span class="crave-price">Price: ' + item.price + '</span>' +
@@ -760,20 +799,16 @@ function craveCard(item, cat, i) {
 function renderCrave() {
   const fav = document.getElementById("fav-grid");
   if (fav && MENU_DATA.Pizza) {
-    const picks = [MENU_DATA.Pizza[0], MENU_DATA.Pizza[4] || MENU_DATA.Pizza[1], MENU_DATA.Pizza[1]].filter(Boolean);
-    const idx = [0, MENU_DATA.Pizza[4] ? 4 : 1, 1];
-    fav.innerHTML = picks.map(function (item, k) { return craveCard(item, 'Pizza', idx[k]); }).join("");
+    const picks = [0, 4, 1];
+    fav.innerHTML = picks.map(function (pi, k) {
+      const item = MENU_DATA.Pizza[pi];
+      return item ? craveCard(item, 'Pizza', pi, pi) : '';
+    }).join("");
   }
   const fl = document.getElementById("flavour-grid");
-  if (fl) {
-    const all = [].concat(MENU_DATA.Pizza || [], MENU_DATA.Pasta || [], MENU_DATA.Starter || []).slice(0, 8);
-    const cats = [];
-    (MENU_DATA.Pizza || []).forEach(function (_, i) { cats.push(['Pizza', i]); });
-    (MENU_DATA.Pasta || []).forEach(function (_, i) { cats.push(['Pasta', i]); });
-    (MENU_DATA.Starter || []).forEach(function (_, i) { cats.push(['Starter', i]); });
-    fl.innerHTML = all.map(function (item, k) {
-      const c = cats[k] || ['Pizza', 0];
-      return craveCard(item, c[0], c[1]);
+  if (fl && MENU_DATA.Pizza) {
+    fl.innerHTML = MENU_DATA.Pizza.map(function (item, i) {
+      return craveCard(item, 'Pizza', i, i);
     }).join("");
   }
 }
