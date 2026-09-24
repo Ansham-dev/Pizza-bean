@@ -52,7 +52,7 @@
     <a href="#home" class="w3-bar-item w3-button w3-xlarge">PIZZA BEAN</a>
     <a href="javascript:void(0)" class="w3-bar-item w3-button w3-xlarge w3-right" onclick="toggleMobileNav()" aria-label="Open menu">&#9776;</a>
   </div>
-  <div id="mobileNav" class="w3-bar-block w3-black w3-hide-large w3-hide-medium nav-mobile-links">
+  <div id="mobileNav" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium nav-mobile-links">
     <a href="#home" class="w3-bar-item w3-button w3-xlarge" onclick="toggleMobileNav()">HOME</a>
     <a href="#menu" class="w3-bar-item w3-button w3-xlarge" onclick="toggleMobileNav()">MENU</a>
     <a href="#about" class="w3-bar-item w3-button w3-xlarge" onclick="toggleMobileNav()">ABOUT</a>
@@ -429,6 +429,10 @@ function renderMenu() {
 function toggleMobileNav() {
   document.getElementById("mobileNav").classList.toggle("w3-show");
 }
+// Auto-close the phone menu if resized up to desktop
+window.addEventListener("resize", function () {
+  if (window.innerWidth > 900) document.getElementById("mobileNav").classList.remove("w3-show");
+});
 
 function openMenu(evt, menuName) {
   const x = document.getElementsByClassName("menu");
