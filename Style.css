@@ -93,7 +93,7 @@ img{max-width:100%}
   background:radial-gradient(circle,rgba(255,182,39,.32),rgba(230,59,33,.12) 45%,transparent 68%);
   filter:blur(10px);pointer-events:none;
 }
-.hero-inner{position:relative;width:min(1200px,93vw);z-index:2}
+.hero-inner{position:relative;width:min(1200px,93vw);z-index:2;transform:none!important;top:auto!important;left:auto!important;margin:0 auto}
 .hero-grid{
   display:grid;grid-template-columns:1.05fr .95fr;gap:32px;align-items:center;text-align:left;
 }
