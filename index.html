@@ -137,6 +137,64 @@
   </div>
 </div>
 
+<!-- Today's Best Deals (PizzaCrave layout + Bean brand) -->
+<section class="crave-section deals-band" id="deals">
+  <div class="w3-content deals-grid">
+    <div class="reveal">
+      <p class="eyebrow eyebrow-red">— limited offer —</p>
+      <h2 class="section-title crave-title">Today's Best Deals</h2>
+      <p class="crave-sub">Hurry! These deals are fresh out of the oven — only for today!</p>
+      <div class="deal-card">
+        <b>Offer 1 : Classic Margherita (Buy One Get One Free)</b>
+        <button class="w3-button w3-white w3-round-large" onclick="menuDelta('Pizza',0,1);openCart()">Order Now</button>
+      </div>
+      <div class="deal-card">
+        <b>Offer 2 : Large Pepperoni Pizza + 2 Drinks</b>
+        <div class="deal-price-row"><span class="deal-price">$14.99</span>
+        <button class="w3-button w3-white w3-round-large" onclick="menuDelta('Pizza',0,2);openCart()">Order Now</button></div>
+      </div>
+    </div>
+    <div class="deals-visual reveal">
+      <img src="homescreen.png" alt="Fresh pepperoni pizza deals" class="deals-img" onerror="this.style.display='none'">
+      <div class="deals-float">🔥 Hot & Fresh</div>
+    </div>
+  </div>
+</section>
+
+<!-- Customer Favorites -->
+<section class="crave-section crave-light" id="favorites">
+  <div class="w3-content w3-center">
+    <p class="eyebrow eyebrow-center reveal">— customer favorites —</p>
+    <h2 class="section-title crave-title reveal">Customer Favorites</h2>
+    <p class="crave-sub reveal">Mr. Bean's most re-ordered. Cheesy, cheeky & baked with love.</p>
+    <div id="fav-grid" class="fav-grid"></div>
+    <p class="reveal"><a href="#menu" class="btn-primary btn-small">Explore all →</a></p>
+  </div>
+</section>
+
+<!-- Build Your Dream Pizza -->
+<section class="crave-section customizer" id="customize">
+  <div class="w3-content w3-center">
+    <h2 class="section-title crave-title reveal">Build Your Dream Pizza</h2>
+    <p class="crave-sub reveal">Choose your crust, toppings, and sauces to make it just the way you love.</p>
+    <div class="custom-pizza reveal">🍕
+      <span class="float-topping t1">🍅</span><span class="float-topping t2">🫑</span><span class="float-topping t3">🧀</span><span class="float-topping t4">🍄</span><span class="float-topping t5">🌶️</span>
+    </div>
+    <p class="reveal"><a href="#menu" class="btn-primary">Start Customizing →</a></p>
+  </div>
+</section>
+
+<!-- Our Regular Flavours -->
+<section class="crave-section crave-light" id="flavours">
+  <div class="w3-content w3-center">
+    <p class="eyebrow eyebrow-center reveal">— regular flavours —</p>
+    <h2 class="section-title crave-title reveal">Our Regular Flavours</h2>
+    <p class="crave-sub reveal">Discover our delicious range of regular pizzas, crafted with fresh ingredients and bold flavours you'll love.</p>
+    <div id="flavour-grid" class="flavour-grid"></div>
+    <p class="reveal"><a href="#menu" class="btn-ghost btn-dark">View Full Menu</a></p>
+  </div>
+</section>
+
 <!-- Menu Section (rendered from MENU_DATA below - clients edit data, not HTML) -->
 <div class="w3-container w3-black w3-padding-64 w3-xxlarge section-shell" id="menu">
   <div class="w3-content">
@@ -189,9 +247,36 @@
       <img src="Menu.jpg" class="chef-img" alt="Chef">
       <p class="w3-center"><img src="header.png" class="logo-card" alt="Pizza Bean logo"></p>
       <div class="about-badge">👨‍🍳 Bean's kitchen since 1990</div>
+      <p><a href="#about" class="btn-ghost btn-small-light">Learn More About Our Story →</a></p>
     </div>
   </div>
 </div>
+
+<!-- From Our Oven to Your Door -->
+<section class="crave-section delivery-strip" id="delivery">
+  <div class="w3-content w3-center">
+    <h2 class="section-title crave-title reveal">From Our Oven to Your Door in 30 Minutes!</h2>
+    <div class="delivery-grid">
+      <div class="delivery-feat reveal">🚀<b>Fast Delivery</b><span>Hot & fresh, Mr. Bean speed</span></div>
+      <div class="delivery-feat reveal">🌿<b>100% Fresh Ingredients</b><span>Wood-fired, halal cheese</span></div>
+      <div class="delivery-feat reveal">📍<b>Track Your Order</b><span>Real-time from oven to door</span></div>
+    </div>
+    <p class="reveal"><a href="#contact" class="btn-primary btn-small">How It Works →</a></p>
+  </div>
+</section>
+
+<!-- What Our Customers Say -->
+<section class="crave-section crave-light" id="reviews">
+  <div class="w3-content w3-center">
+    <h2 class="section-title crave-title reveal">What Our Customers Say</h2>
+    <div class="reviews-grid">
+      <div class="review-card reveal">⭐⭐⭐⭐⭐<p>"The teddy-bean pizza made my kids laugh and the cheese pull is unreal!"</p><b>— Jessy ★ 4.9</b></div>
+      <div class="review-card reveal">⭐⭐⭐⭐⭐<p>"Ordered Margherita BOGO, arrived in 25 mins, still bubbling hot."</p><b>— Mark ★ 5.0</b></div>
+      <div class="review-card reveal">⭐⭐⭐⭐⭐<p>"Fun, quirky place with Bean humour everywhere. Spicy Inferno is 🔥"</p><b>— Unnati ★ 4.8</b></div>
+      <div class="review-card reveal">⭐⭐⭐⭐⭐<p>"I asked for extra cheese and they actually did it. Best in town!"</p><b>— Sarah M ★ 5.0</b></div>
+    </div>
+  </div>
+</section>
 
 <!-- Contact Section -->
 <div class="w3-container w3-padding-64 w3-blue-grey w3-xlarge section-shell contact-shell" id="contact">
@@ -251,24 +336,30 @@
   </div>
 </aside>
 
-<!-- Footer -->
-<footer class="w3-center w3-black w3-padding-48">
-  <div class="w3-row-padding w3-large">
-    <div class="w3-third w3-margin-bottom">
+<!-- Footer - PizzaCrave red style + Bean brand -->
+<footer class="w3-center w3-padding-48 crave-footer">
+  <div class="w3-row-padding w3-large w3-content footer-grid">
+    <div class="w3-third w3-margin-bottom w3-left-align">
       <h3>PIZZA BEAN</h3>
       <p class="w3-medium">Baked with fun and love.</p>
-      <p><a href="#menu" class="w3-button w3-red">See the menu</a></p>
+      <p class="w3-medium"><a href="#home">Home</a> · <a href="#menu">Menu</a> · <a href="#about">About Us</a> · <a href="#contact">Contact</a></p>
+      <p><a href="#menu" class="w3-button w3-white w3-round-large">See the menu</a></p>
     </div>
-    <div class="w3-third w3-margin-bottom">
-      <h3>Opening Hours</h3>
-      <p class="w3-medium">Wed – Sat 10:00 - 24:00<br>Mon, Tue &amp; Sun Closed</p>
-    </div>
-    <div class="w3-third w3-margin-bottom">
+    <div class="w3-third w3-margin-bottom w3-left-align">
       <h3>Find Us</h3>
-      <p class="w3-medium"><span id="address-text-2">123 Demo Street, Sample City</span><br><a id="phone-link-2" href="tel:+15550100">+1 555-0100</a></p>
+      <p class="w3-medium">📞 <a id="phone-link-2" href="tel:+15550100">+1 555-0100</a><br>📧 demo@example.com<br>📍 <span id="address-text-2">123 Demo Street, Sample City</span></p>
+      <p class="w3-medium">Facebook · Instagram · X · TikTok</p>
+    </div>
+    <div class="w3-third w3-margin-bottom w3-left-align">
+      <h3>Stay in the Loop!</h3>
+      <p class="w3-medium">Sign up for exclusive deals and new pizza launches.</p>
+      <form onsubmit="event.preventDefault();showToast('Subscribed! Welcome to Pizza Bean club 🍕')">
+        <input class="w3-input w3-border w3-round-large" type="email" placeholder="Enter your email address" required>
+        <p><button class="w3-button w3-black w3-round-large w3-block" type="submit">Subscribe</button></p>
+      </form>
     </div>
   </div>
-  <p class="w3-large">Powered by <a title="PIZZA BEAN" target="_blank" class="w3-hover-text-green">PIZZA BEAN</a></p>
+  <p class="w3-large">Powered by <a title="PIZZA BEAN" target="_blank" class="w3-hover-text-green">PIZZA BEAN</a> · Wed – Sat 10:00 - 24:00</p>
 </footer>
 
 <script>
@@ -656,9 +747,41 @@ document.addEventListener("keydown", function (e) { if (e.key === "Escape") clos
   document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
 })();
 
+/* PizzaCrave grids: favorites (3) + regular flavours (8) - reuse MENU_DATA so ADD/cart keeps working */
+function craveCard(item, cat, i) {
+  return '<div class="crave-card reveal in">' +
+    '<div class="crave-pizza-emoji">🍕</div>' +
+    '<h3>' + item.name + '</h3>' +
+    '<p class="crave-desc">' + item.desc + '</p>' +
+    '<div class="crave-price-row"><span class="crave-price">Price: ' + item.price + '</span>' +
+    '<button class="w3-button w3-red w3-round-large w3-small" onclick="menuDelta(\'' + cat + '\',' + i + ',1)">Order</button></div>' +
+    '</div>';
+}
+function renderCrave() {
+  const fav = document.getElementById("fav-grid");
+  if (fav && MENU_DATA.Pizza) {
+    const picks = [MENU_DATA.Pizza[0], MENU_DATA.Pizza[4] || MENU_DATA.Pizza[1], MENU_DATA.Pizza[1]].filter(Boolean);
+    const idx = [0, MENU_DATA.Pizza[4] ? 4 : 1, 1];
+    fav.innerHTML = picks.map(function (item, k) { return craveCard(item, 'Pizza', idx[k]); }).join("");
+  }
+  const fl = document.getElementById("flavour-grid");
+  if (fl) {
+    const all = [].concat(MENU_DATA.Pizza || [], MENU_DATA.Pasta || [], MENU_DATA.Starter || []).slice(0, 8);
+    const cats = [];
+    (MENU_DATA.Pizza || []).forEach(function (_, i) { cats.push(['Pizza', i]); });
+    (MENU_DATA.Pasta || []).forEach(function (_, i) { cats.push(['Pasta', i]); });
+    (MENU_DATA.Starter || []).forEach(function (_, i) { cats.push(['Starter', i]); });
+    fl.innerHTML = all.map(function (item, k) {
+      const c = cats[k] || ['Pizza', 0];
+      return craveCard(item, c[0], c[1]);
+    }).join("");
+  }
+}
+
 applyConfig();
 document.getElementById("booking-form").addEventListener("submit", handleBooking);
 renderMenu();
+renderCrave();
 renderCart();
 document.getElementById("myLink").click();
 </script>
