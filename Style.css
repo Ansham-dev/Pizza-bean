@@ -286,24 +286,52 @@ footer .w3-medium{font-family:"Plus Jakarta Sans",sans-serif}
 
 /* ---------- responsive ---------- */
 @media(max-width:900px){
-  .hero-grid{grid-template-columns:1fr;text-align:center;gap:8px}
+  .hero-grid{grid-template-columns:1fr;text-align:center;gap:24px}
   .hero-copy .hero-cta,.hero-stats{justify-content:center}
   .hero-sub{margin-inline:auto}
   .hero-pizza-wrap{min-height:0}
+  .hero-glow{right:auto;left:50%;transform:translateX(-50%);top:-60px;width:min(480px,90vw);height:min(480px,90vw)}
+  .pizza-orbit{width:min(420px,84vw)}
   #heroPizza{width:min(430px,88vw)}
   .about-grid,.contact-grid{grid-template-columns:1fr}
-  #scroll-follower{width:250px;margin-left:-125px;margin-top:-125px}
+  #scroll-follower{width:180px;margin-left:-90px;margin-top:-90px}
+  .footer-grid .w3-third{width:100%!important;float:none!important;text-align:center!important}
+  .footer-grid .w3-third.w3-left-align{text-align:center!important}
 }
 @media (max-width: 600px) {
-  .bgimg{min-height:100svh;background-position:center;padding-top:96px}
-  #menu.w3-xxlarge,#about.w3-xlarge,#contact.w3-xlarge{font-size:19px!important;line-height:1.5}
-  #menu .w3-jumbo,.section-title{font-size:52px!important}
-  .tablink{padding:12px 4px!important;font-size:22px!important}
+  .bgimg{min-height:100svh;background-position:center;padding:104px 0 44px}
+  #myNavbarMobile .w3-bar-item{min-height:48px;display:flex;align-items:center}
+  #myNavbarMobile .w3-right{font-size:28px!important;padding:6px 18px!important}
+  .nav-mobile-links .w3-bar-item{text-align:center;padding:14px!important}
+  .sauce-heading{font-size:clamp(3.4rem,16vw,4.6rem)!important;line-height:.9}
+  .hero-copy .eyebrow{font-size:11px;letter-spacing:1.5px;padding:7px 12px;max-width:92vw;white-space:normal}
+  .hero-sub{font-size:16px!important;line-height:1.55}
+  .hero-cta{flex-direction:column;align-items:stretch;gap:10px}
+  .hero-cta .btn-primary,.hero-cta .btn-ghost{text-align:center;width:100%;padding:15px 20px!important;font-size:16px}
+  .hero-stats{gap:14px 22px;justify-content:center}
+  .hero-stats b{font-size:22px}
+  .pizza-badge{font-size:12px;padding:8px 12px;white-space:normal;max-width:46vw;text-align:center;line-height:1.3}
+  .badge-top{top:0;left:0}.badge-bottom{bottom:0;right:0}
+  .scroll-hint{display:none}
+  #menu.w3-xxlarge,#about.w3-xlarge,#contact.w3-xlarge{font-size:18px!important;line-height:1.55}
+  #menu .w3-jumbo{font-size:44px!important}
+  .section-title{font-size:44px!important}
+  .tablink{padding:10px 4px!important;font-size:20px!important}
   #Pizza,#Pasta,#Starter{padding:20px 14px!important}
-  .menu-item-head{font-size:26px}
-  #booking-form .w3-input{font-size:17px!important;padding:13px!important}
-  .badge-top{left:-2%}.badge-bottom{right:-2%}
+  .menu-item-head{font-size:24px}
+  .w3-tag.w3-dark-grey.w3-round.price{font-size:14px;padding:5px 12px}
+  #booking-form .w3-input{font-size:16px!important;padding:13px!important}
   .marquee-track{font-size:22px}
+  .deal-price-row{flex-wrap:wrap}
+  .custom-pizza{font-size:88px}
+  .float-topping{font-size:24px}
+  .t1{left:-14px}.t2{right:-12px}.t3{left:-18px}.t4{right:-16px}
+  .hours-grid .w3-col.s6{width:100%!important}
+  #cart-drawer{width:100%;border-radius:0}
+  .cart-head{border-radius:0}
+  #toast{max-width:92vw;white-space:normal;text-align:center;font-size:14px;line-height:1.4}
+  #scroll-follower{width:130px;margin-left:-65px;margin-top:-65px}
+  .crave-card h3{font-size:28px}
 }
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
