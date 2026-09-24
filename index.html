@@ -575,29 +575,57 @@ document.addEventListener("keydown", function (e) { if (e.key === "Escape") clos
 
   function onScroll() {
     const y = window.scrollY || 0;
-    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const vh = window.innerHeight || 800;
+    const vw = window.innerWidth || 1200;
+    const h = document.documentElement.scrollHeight - vh;
     if (progress) progress.style.transform = "scaleX(" + (h > 0 ? y / h : 0) + ")";
     if (nav) nav.classList.toggle("scrolled", y > 30);
 
-    // HERO: drift up + spin + shrink as you leave hero
+    // HERO: fly up-right toward the menu as you scroll (hands off to traveler)
     if (heroPizza) {
-      const rot = y * 0.18;
-      const drift = Math.min(y * 0.28, 420);
-      const scale = Math.max(0.72, 1 - y / 2600);
+      const rot = y * 0.22;
+      const fade = Math.max(0, 1 - y / (vh * 0.85));
       mx += (tx - mx) * 0.08;
       my += (ty - my) * 0.08;
-      heroPizza.style.transform = "translateY(" + (-drift * 0.35) + "px) translateX(" + (mx * 0.6) + "px) scale(" + scale + ")";
+      heroPizza.style.transform = "translateY(" + (-y * 0.32 + my * 0.6) + "px) translateX(" + (y * 0.45 + mx * 0.6) + "px) scale(" + Math.max(0.55, 1 - y / 2200) + ")";
+      heroPizza.style.opacity = fade.toFixed(2);
       if (heroSpin) heroSpin.setAttribute("transform", "rotate(" + rot + " 240 220)");
     }
-    // FOLLOWER: appears after hero, travels down the page and keeps spinning
+    // TRAVELER: one pizza that flies page -> page (menu right, about left, contact right)
     if (follower) {
-      const showAt = window.innerHeight * 0.7;
-      const opacity = y > showAt ? Math.min(1, (y - showAt) / 300) * 0.95 : 0;
-      const fRot = 20 + y * 0.12;
-      const fY = Math.sin(y * 0.002) * 26 + (y - showAt) * 0.06;
-      const fX = Math.cos(y * 0.0015) * 18;
-      follower.style.opacity = opacity.toFixed(2);
-      follower.style.transform = "translate(" + fX + "px," + fY + "px) rotate(" + fRot + "deg)";
+      const menuEl = document.getElementById("menu");
+      const aboutEl = document.getElementById("about");
+      const contactEl = document.getElementById("contact");
+      const menuTop = menuEl ? menuEl.offsetTop : vh;
+      const aboutTop = aboutEl ? aboutEl.offsetTop : vh * 2;
+      const contactTop = contactEl ? contactEl.offsetTop : vh * 3;
+      const docBottom = Math.max(1, h);
+
+      // journey stops: x as fraction of viewport, y-offset, scale
+      const rightX = Math.min(vw * 0.33, 420);
+      const leftX = -Math.min(vw * 0.33, 420);
+      const stops = [
+        { y: vh * 0.35, x: rightX, dy: -40, s: 0.9, o: 0 },      // still in hero -> hidden
+        { y: menuTop + vh * 0.1, x: rightX, dy: 30, s: 1.0, o: 0.95 },   // MENU right
+        { y: aboutTop + vh * 0.15, x: leftX, dy: 20, s: 1.12, o: 0.95 }, // ABOUT left
+        { y: contactTop + vh * 0.1, x: rightX, dy: 40, s: 1.0, o: 0.95 },// CONTACT right
+        { y: docBottom, x: 0, dy: 120, s: 0.85, o: 0.25 }                // footer fade
+      ];
+      let a = stops[0], b = stops[stops.length - 1];
+      for (let i = 0; i < stops.length - 1; i++) {
+        if (y >= stops[i].y && y <= stops[i + 1].y) { a = stops[i]; b = stops[i + 1]; break; }
+      }
+      if (y < stops[0].y) { a = stops[0]; b = stops[0]; }
+      const span = Math.max(1, b.y - a.y);
+      let t = Math.min(1, Math.max(0, (y - a.y) / span));
+      t = t * t * (3 - 2 * t); // smoothstep
+      const jx = a.x + (b.x - a.x) * t;
+      const jy = a.dy + (b.dy - a.dy) * t + Math.sin(y * 0.003) * 18;
+      const js = a.s + (b.s - a.s) * t;
+      const jo = a.o + (b.o - a.o) * t;
+      const rot = y * 0.25;
+      follower.style.opacity = Math.max(0, jo).toFixed(2);
+      follower.style.transform = "translate(" + jx.toFixed(1) + "px," + jy.toFixed(1) + "px) rotate(" + rot.toFixed(1) + "deg) scale(" + js.toFixed(3) + ")";
     }
     requestAnimationFrameIdle();
   }
