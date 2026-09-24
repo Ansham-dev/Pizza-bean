@@ -7,11 +7,37 @@
 <meta name="description" content="PIZZA BEAN - pizza, pasta and starters. Sample static restaurant website.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍕</text></svg>">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amatic+SC">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amatic+SC:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="Style.css">
 </head>
 
 <body>
+
+<div id="scroll-progress"></div>
+
+<!-- Floating pizza that travels + spins as you scroll (decorative, pointer-events none) -->
+<div id="scroll-follower" aria-hidden="true">
+  <svg viewBox="0 0 400 400" class="follower-svg">
+    <defs>
+      <radialGradient id="fCheese" cx="40%" cy="35%" r="75%">
+        <stop offset="0%" stop-color="#ffe08a"/><stop offset="55%" stop-color="#ffbe3c"/><stop offset="100%" stop-color="#ef8f1a"/>
+      </radialGradient>
+    </defs>
+    <circle cx="200" cy="200" r="188" fill="#d98a2e"/>
+    <circle cx="200" cy="200" r="172" fill="#f4b54a"/>
+    <circle cx="200" cy="200" r="148" fill="#d6301f"/>
+    <circle cx="200" cy="200" r="132" fill="url(#fCheese)"/>
+    <g fill="#b3271e" stroke="#7c150d" stroke-width="4">
+      <circle cx="150" cy="150" r="28"/><circle cx="250" cy="140" r="30"/><circle cx="260" cy="240" r="27"/><circle cx="150" cy="250" r="29"/><circle cx="200" cy="195" r="30"/>
+    </g>
+    <g fill="#1f9d4c">
+      <ellipse cx="185" cy="130" rx="14" ry="8" transform="rotate(-24 185 130)"/><ellipse cx="235" cy="200" rx="14" ry="8" transform="rotate(30 235 200)"/><ellipse cx="175" cy="215" rx="13" ry="8" transform="rotate(-14 175 215)"/>
+    </g>
+    <g fill="#fff" opacity=".55"><circle cx="142" cy="142" r="5"/><circle cx="242" cy="132" r="6"/><circle cx="192" cy="187" r="5"/></g>
+  </svg>
+</div>
 
 <!-- Navbar: centered links on desktop, hamburger on phones -->
 <div class="w3-top">
@@ -37,16 +63,86 @@
 
 <!-- Header -->
 <header class="bgimg w3-display-container" id="home">
-  <div class="w3-display-middle w3-center hero-inner">
-    <h1 class="sauce-heading">PIZZA BEAN</h1>
-    <p><a href="#menu" class="w3-button w3-xxlarge w3-black">Let me see the menu</a></p>
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="w3-display-middle w3-center hero-inner hero-grid">
+    <div class="hero-copy reveal in">
+      <span class="eyebrow">🍕 Wood-fired • Mr. Bean approved</span>
+      <h1 class="sauce-heading">PIZZA<br><span class="bean-word">BEAN</span></h1>
+      <p class="hero-sub">Cheesy, cheeky & baked with love. Scroll — watch the big pizza spin, drift and follow you down the page.</p>
+      <p class="hero-cta">
+        <a href="#menu" class="btn-primary">Let me see the menu</a>
+        <a href="#about" class="btn-ghost">Our story</a>
+      </p>
+      <div class="hero-stats">
+        <div><b>4.9★</b><span>2k+ reviews</span></div>
+        <div><b>30 min</b><span>hot delivery</span></div>
+        <div><b>100%</b><span>halal cheese</span></div>
+      </div>
+    </div>
+    <div class="hero-pizza-wrap">
+      <div class="pizza-orbit" aria-hidden="true"></div>
+      <svg id="heroPizza" viewBox="0 0 480 480" role="img" aria-label="Big spinning pizza">
+        <defs>
+          <radialGradient id="heroCheese" cx="42%" cy="36%" r="72%">
+            <stop offset="0%" stop-color="#ffe79a"/><stop offset="52%" stop-color="#ffc93e"/><stop offset="100%" stop-color="#f08c14"/>
+          </radialGradient>
+          <radialGradient id="crustShade" cx="50%" cy="42%" r="65%">
+            <stop offset="0%" stop-color="#ffdf9e"/><stop offset="70%" stop-color="#eda63f"/><stop offset="100%" stop-color="#c97a1e"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="240" cy="430" rx="150" ry="22" fill="rgba(0,0,0,.45)"/>
+        <g id="heroPizzaSpin">
+          <circle cx="240" cy="220" r="205" fill="#a85e18"/>
+          <circle cx="240" cy="220" r="192" fill="url(#crustShade)"/>
+          <circle cx="240" cy="220" r="192" fill="none" stroke="#8a4a12" stroke-width="3" stroke-dasharray="10 14" opacity=".5"/>
+          <circle cx="240" cy="220" r="160" fill="#c62b1b"/>
+          <circle cx="240" cy="220" r="146" fill="url(#heroCheese)"/>
+          <!-- cheese drips -->
+          <g fill="#ffc93e">
+            <ellipse cx="160" cy="300" rx="18" ry="26"/><ellipse cx="320" cy="295" rx="16" ry="24"/><ellipse cx="240" cy="350" rx="20" ry="18"/>
+          </g>
+          <!-- pepperoni -->
+          <g>
+            <g transform="translate(175,165)"><circle r="34" fill="#b3271e" stroke="#77130c" stroke-width="5"/><circle cx="-8" cy="-8" r="6" fill="#e86a5a" opacity=".8"/><circle cx="9" cy="7" r="4" fill="#7c150d"/></g>
+            <g transform="translate(300,155)"><circle r="36" fill="#b3271e" stroke="#77130c" stroke-width="5"/><circle cx="-9" cy="-9" r="6" fill="#e86a5a" opacity=".8"/></g>
+            <g transform="translate(315,270)"><circle r="32" fill="#b3271e" stroke="#77130c" stroke-width="5"/><circle cx="-7" cy="-8" r="5" fill="#e86a5a" opacity=".8"/></g>
+            <g transform="translate(185,275)"><circle r="35" fill="#b3271e" stroke="#77130c" stroke-width="5"/><circle cx="-8" cy="-7" r="6" fill="#e86a5a" opacity=".8"/></g>
+            <g transform="translate(245,220)"><circle r="37" fill="#b3271e" stroke="#77130c" stroke-width="5"/><circle cx="-9" cy="-9" r="7" fill="#e86a5a" opacity=".85"/></g>
+          </g>
+          <!-- basil -->
+          <g fill="#1f9d4c" stroke="#146631" stroke-width="3">
+            <path d="M210 140 q22 -14 38 2 q-20 14 -38 -2"/><path d="M275 225 q22 -13 36 4 q-21 12 -36 -4"/><path d="M200 240 q20 -12 34 3 q-19 11 -34 -3"/><path d="M260 300 q20 -12 33 3 q-18 11 -33 -3"/>
+          </g>
+          <!-- mushrooms + olives -->
+          <g fill="#fff4d6" stroke="#b99a55" stroke-width="3">
+            <g transform="translate(225,165) rotate(18)"><rect x="-14" y="-6" width="28" height="12" rx="6"/><rect x="-5" y="-16" width="10" height="18" rx="5"/></g>
+            <g transform="translate(280,200) rotate(-22)"><rect x="-14" y="-6" width="28" height="12" rx="6"/><rect x="-5" y="-16" width="10" height="18" rx="5"/></g>
+          </g>
+          <g fill="#2b1d12"><circle cx="155" cy="210" r="9"/><circle cx="295" cy="250" r="9"/><circle cx="230" cy="305" r="9"/><circle cx="208" cy="304" r="4" fill="#fff" opacity=".7"/><circle cx="150" cy="208" r="3" fill="#fff" opacity=".7"/></g>
+          <g fill="#fff" opacity=".5"><ellipse cx="200" cy="120" rx="48" ry="14" transform="rotate(-18 200 120)"/></g>
+        </g>
+      </svg>
+      <div class="pizza-badge badge-top">🔥 450°C wood-fired</div>
+      <div class="pizza-badge badge-bottom">🧀 extra cheese pull</div>
+    </div>
   </div>
+  <div class="scroll-hint" aria-hidden="true"><span></span>scroll to spin</div>
 </header>
 
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>HOT & FRESH 🍕 WOOD-FIRED 🍕 MR. BEAN APPROVED 🍕 CHEESE PULL 🍕 HOT & FRESH 🍕 WOOD-FIRED 🍕 MR. BEAN APPROVED 🍕 CHEESE PULL 🍕&nbsp;</span>
+    <span>HOT & FRESH 🍕 WOOD-FIRED 🍕 MR. BEAN APPROVED 🍕 CHEESE PULL 🍕 HOT & FRESH 🍕 WOOD-FIRED 🍕 MR. BEAN APPROVED 🍕 CHEESE PULL 🍕&nbsp;</span>
+  </div>
+</div>
+
 <!-- Menu Section (rendered from MENU_DATA below - clients edit data, not HTML) -->
-<div class="w3-container w3-black w3-padding-64 w3-xxlarge" id="menu">
+<div class="w3-container w3-black w3-padding-64 w3-xxlarge section-shell" id="menu">
   <div class="w3-content">
-    <h1 class="w3-center w3-jumbo" style="margin-bottom:64px">THE MENU</h1>
+    <p class="eyebrow eyebrow-center reveal">— the menu —</p>
+    <h1 class="w3-center w3-jumbo section-title reveal" style="margin-bottom:16px">Baked to crave</h1>
+    <p class="section-sub w3-center reveal" style="margin-bottom:48px">Hand-stretched dough, rich tomato, loads of cheese. Pick your craving.</p>
     <div class="w3-row w3-center w3-border w3-border-dark-grey">
       <a href="javascript:void(0)" onclick="openMenu(event, 'Pizza');" id="myLink">
         <div class="w3-col s4 tablink w3-padding-large">Pizza</div>
@@ -67,38 +163,46 @@
 </div>
 
 <!-- About Section -->
-<div class="w3-container w3-padding-64 w3-red w3-xlarge" id="about">
-  <div class="w3-content">
-    <h1 class="w3-center w3-jumbo" style="margin-bottom:64px">About</h1>
-    <p>The Pizza Restaurant was founded by <strong>Mr. Bean himself</strong>, who wanted to bring the world of pizza and pasta to life with a touch of humor and heart. The restaurant's atmosphere reflects Mr. Bean's quirky yet warm personality, making every visit a delightful experience.</p>
-    <p><strong>The Chef?</strong> Mr. Bean himself! A culinary genius with a sense of humor, always adding a bit of fun to the kitchen.</p>
-    <img src="Menu.jpg" style="width:150px" class="w3-circle w3-right" alt="Chef">
-    <p>We are proud of our interiors and the cozy vibe that Mr. Bean brings to our kitchen and dining experience.</p>
-    <p class="w3-center"><img src="header.png" class="logo-card" alt="Pizza Bean logo"></p>
-    <h1><b>Opening Hours</b></h1>
-
-    <div class="w3-row">
-      <div class="w3-col s6">
-        <p>Mon &amp; Tue CLOSED</p>
-        <p>Wednesday 10:00 - 24:00</p>
-        <p>Thursday 10:00 - 24:00</p>
-      </div>
-      <div class="w3-col s6">
-        <p>Friday 10:00 - 24:00</p>
-        <p>Saturday 10:00 - 23:00</p>
-        <p>Sunday Closed</p>
+<div class="w3-container w3-padding-64 w3-red w3-xlarge section-shell about-shell" id="about">
+  <div class="w3-content about-grid">
+    <div class="reveal">
+      <p class="eyebrow">— our story —</p>
+      <h1 class="section-title" style="margin-bottom:24px; text-align:left">About</h1>
+      <p>The Pizza Restaurant was founded by <strong>Mr. Bean himself</strong>, who wanted to bring the world of pizza and pasta to life with a touch of humor and heart. The restaurant's atmosphere reflects Mr. Bean's quirky yet warm personality, making every visit a delightful experience.</p>
+      <p><strong>The Chef?</strong> Mr. Bean himself! A culinary genius with a sense of humor, always adding a bit of fun to the kitchen.</p>
+      <p>We are proud of our interiors and the cozy vibe that Mr. Bean brings to our kitchen and dining experience.</p>
+      <h1><b>Opening Hours</b></h1>
+      <div class="w3-row hours-grid">
+        <div class="w3-col s6">
+          <p>Mon &amp; Tue CLOSED</p>
+          <p>Wednesday 10:00 - 24:00</p>
+          <p>Thursday 10:00 - 24:00</p>
+        </div>
+        <div class="w3-col s6">
+          <p>Friday 10:00 - 24:00</p>
+          <p>Saturday 10:00 - 23:00</p>
+          <p>Sunday Closed</p>
+        </div>
       </div>
     </div>
-
+    <div class="about-visual reveal">
+      <img src="Menu.jpg" class="chef-img" alt="Chef">
+      <p class="w3-center"><img src="header.png" class="logo-card" alt="Pizza Bean logo"></p>
+      <div class="about-badge">👨‍🍳 Bean's kitchen since 1990</div>
+    </div>
   </div>
 </div>
 
 <!-- Contact Section -->
-<div class="w3-container w3-padding-64 w3-blue-grey w3-xlarge" id="contact">
-  <div class="w3-content">
-    <h1 class="w3-center w3-jumbo" style="margin-bottom:64px">Contact</h1>
-    <p>Find us at <span id="address-text">123 Demo Street, Sample City</span> or call us at <a id="phone-link" href="tel:+15550100"><span id="phone-text">+1 555-0100</span></a></p>
-    <p><span class="w3-tag">FYI!</span> We offer full-service catering for any event, large or small.</p>
+<div class="w3-container w3-padding-64 w3-blue-grey w3-xlarge section-shell contact-shell" id="contact">
+  <div class="w3-content contact-grid">
+    <div class="reveal">
+      <p class="eyebrow">— find us —</p>
+      <h1 class="section-title" style="margin-bottom:24px; text-align:left">Contact</h1>
+      <p>Find us at <span id="address-text">123 Demo Street, Sample City</span> or call us at <a id="phone-link" href="tel:+15550100"><span id="phone-text">+1 555-0100</span></a></p>
+      <p><span class="w3-tag contact-tag">FYI!</span> We offer full-service catering for any event, large or small.</p>
+    </div>
+    <div class="contact-card reveal">
     <!-- Static-site demo form: no backend. Shows a booking summary on the page,
          then the visitor taps SEND to open their email app (or just calls us).
          To collect messages without a backend, POST to Formspree/Google Form
@@ -115,6 +219,7 @@
       <p id="booking-summary"></p>
       <p><a id="booking-mailto" class="w3-button w3-green w3-block" href="#">OPEN EMAIL APP TO SEND</a></p>
       <p class="w3-medium">No email app? Just call us: <a id="booking-tel" href="tel:+15550100">+1 555-0100</a></p>
+    </div>
     </div>
   </div>
 </div>
@@ -453,6 +558,78 @@ function placeOrder(e) {
 }
 document.getElementById("checkout-form").addEventListener("submit", placeOrder);
 document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeCart(); });
+
+/* ============ SCROLL PIZZA + ELEVATED MOTION (no backend, pure delight) ============ */
+(function () {
+  const heroPizza = document.getElementById("heroPizza");
+  const heroSpin = document.getElementById("heroPizzaSpin");
+  const follower = document.getElementById("scroll-follower");
+  const progress = document.getElementById("scroll-progress");
+  const nav = document.getElementById("myNavbar");
+  let mx = 0, my = 0, tx = 0, ty = 0;
+
+  document.addEventListener("mousemove", function (e) {
+    tx = (e.clientX / window.innerWidth - 0.5) * 22;
+    ty = (e.clientY / window.innerHeight - 0.5) * 22;
+  });
+
+  function onScroll() {
+    const y = window.scrollY || 0;
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.transform = "scaleX(" + (h > 0 ? y / h : 0) + ")";
+    if (nav) nav.classList.toggle("scrolled", y > 30);
+
+    // HERO: drift up + spin + shrink as you leave hero
+    if (heroPizza) {
+      const rot = y * 0.18;
+      const drift = Math.min(y * 0.28, 420);
+      const scale = Math.max(0.72, 1 - y / 2600);
+      mx += (tx - mx) * 0.08;
+      my += (ty - my) * 0.08;
+      heroPizza.style.transform = "translateY(" + (-drift * 0.35) + "px) translateX(" + (mx * 0.6) + "px) scale(" + scale + ")";
+      if (heroSpin) heroSpin.setAttribute("transform", "rotate(" + rot + " 240 220)");
+    }
+    // FOLLOWER: appears after hero, travels down the page and keeps spinning
+    if (follower) {
+      const showAt = window.innerHeight * 0.7;
+      const opacity = y > showAt ? Math.min(1, (y - showAt) / 300) * 0.95 : 0;
+      const fRot = 20 + y * 0.12;
+      const fY = Math.sin(y * 0.002) * 26 + (y - showAt) * 0.06;
+      const fX = Math.cos(y * 0.0015) * 18;
+      follower.style.opacity = opacity.toFixed(2);
+      follower.style.transform = "translate(" + fX + "px," + fY + "px) rotate(" + fRot + "deg)";
+    }
+    requestAnimationFrameIdle();
+  }
+  let ticking = false;
+  function requestAnimationFrameIdle() {
+    // smooth mouse-follow even between scrolls
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(function () {
+        // tiny idle float applied via CSS animation; just ease mouse here
+        ticking = false;
+      });
+    }
+  }
+  let raf = null;
+  function loop() {
+    mx += (tx - mx) * 0.06;
+    my += (ty - my) * 0.06;
+    raf = requestAnimationFrame(loop);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  loop();
+  onScroll();
+
+  // Reveal on scroll
+  const io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+})();
 
 applyConfig();
 document.getElementById("booking-form").addEventListener("submit", handleBooking);
